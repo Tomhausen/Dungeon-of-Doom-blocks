@@ -1,0 +1,35 @@
+{
+    "name": "gfgf",
+    "description": "",
+    "dependencies": {
+        "device": "*",
+        "Timers": "github:microsoft/arcade-timers#v1.1.0",
+        "arcade-sprite-util": "github:jwunderl/arcade-sprite-util#v0.3.1",
+        "Tiles Advanced": "github:tomhausen/the-code-zone-tiles-advanced#v0.0.2"
+    },
+    "files": [
+        "main.blocks",
+        "main.ts",
+        "README.md",
+        "assets.json",
+        "tilemap.g.jres",
+        "tilemap.g.ts",
+        "main_backup.txt",
+        "images.g.jres",
+        "images.g.ts",
+        "Tiles Advanced.json",
+        "main.py"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "targetVersions": {
+        "target": "1.13.9",
+        "pxt": "8.2.5",
+        "targetId": "arcade"
+    },
+    "supportedTargets": [
+        "arcade"
+    ],
+    "preferredEditor": "blocksprj"
+}
