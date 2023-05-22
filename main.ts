@@ -18,6 +18,23 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
         jump_count += 1
     }
 })
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    timer.background(function () {
+        shield.setFlag(SpriteFlag.Invisible, false)
+        shield.setFlag(SpriteFlag.GhostThroughSprites, false)
+        sword.setFlag(SpriteFlag.Invisible, true)
+        pause(1000)
+        shield.setFlag(SpriteFlag.Invisible, true)
+        shield.setFlag(SpriteFlag.GhostThroughSprites, true)
+        sword.setFlag(SpriteFlag.Invisible, false)
+    })
+    shield.setPosition(me.x, me.y)
+    if (me.image.equals(assets.image`me left`)) {
+        me.setImage(assets.image`shield left`)
+    } else {
+        me.setImage(assets.image`shield right`)
+    }
+})
 function handle_direction () {
     if (me.image.equals(assets.image`me left`)) {
         sword.setPosition(me.x - 10, me.y - 6)
@@ -67,8 +84,24 @@ sprites.onOverlap(SpriteKind.Sword, SpriteKind.Enemy, function (sword, enemy) {
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (me, enemy) {
-    info.changeLifeBy(-1)
-    pause(2000)
+    if (!(me.overlapsWith(shield))) {
+        info.changeLifeBy(-1)
+        pause(2000)
+    }
+})
+sprites.onOverlap(SpriteKind.shield, SpriteKind.Enemy, function (sprite, otherSprite) {
+    tilesAdvanced.followUsingPathfinding(otherSprite, me, 0)
+    if (sprite.image.equals(assets.image`shield left`)) {
+        x_vel = -100
+    } else {
+        x_vel = 100
+    }
+    for (let index = 0; index < 10; index++) {
+        otherSprite.vx = x_vel
+        pause(10)
+    }
+    pause(500)
+    tilesAdvanced.followUsingPathfinding(otherSprite, me, 50)
 })
 function y_movement () {
     me.vy += gravity
@@ -84,7 +117,9 @@ function position_enemy (enemy: Sprite) {
     }
 }
 let enemy: Sprite = null
+let x_vel = 0
 let attacking = false
+let shield: Sprite = null
 let sword: Sprite = null
 let me: Sprite = null
 let jump_count = 0
@@ -99,6 +134,9 @@ sword = sprites.create(assets.image`sword right`, SpriteKind.Sword)
 sword.setFlag(SpriteFlag.GhostThroughWalls, true)
 sword.scale = 1.5
 load_level()
+shield = sprites.create(assets.image`shield right`, SpriteKind.shield)
+shield.setFlag(SpriteFlag.Invisible, true)
+shield.setFlag(SpriteFlag.GhostThroughSprites, true)
 game.onUpdate(function () {
     x_movement()
     y_movement()
