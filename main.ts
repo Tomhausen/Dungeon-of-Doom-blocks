@@ -76,6 +76,7 @@ function load_level () {
     tiles.setCurrentTilemap(tilemap`level1`)
     tiles.placeOnRandomTile(me, assets.tile`player spawn`)
     tiles.setTileAt(me.tilemapLocation(), assets.tile`wall`)
+    tiles_to_animate = tiles.getTilesByType(assets.tile`torch`)
 }
 sprites.onOverlap(SpriteKind.Sword, SpriteKind.Enemy, function (sword, enemy) {
     if (attacking) {
@@ -116,6 +117,7 @@ function position_enemy (enemy: Sprite) {
         position_enemy(enemy)
     }
 }
+let anim: Image[] = []
 let enemy: Sprite = null
 let x_vel = 0
 let attacking = false
@@ -124,6 +126,9 @@ let sword: Sprite = null
 let me: Sprite = null
 let jump_count = 0
 let gravity = 0
+let tiles_to_animate: tiles.Location[] = []
+tiles_to_animate = []
+let frame = 0
 gravity = 8
 jump_count = 2
 info.setScore(0)
@@ -152,4 +157,14 @@ game.onUpdateInterval(2000, function () {
     100,
     true
     )
+})
+game.onUpdateInterval(200, function () {
+    anim = assets.animation`torch flicker`
+    for (let value of tiles_to_animate) {
+        tiles.setTileAt(value, anim[frame])
+    }
+    frame += 1
+    if (frame == anim.length - 1) {
+        frame = 0
+    }
 })
