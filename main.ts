@@ -1,6 +1,7 @@
 namespace SpriteKind {
     export const Sword = SpriteKind.create()
     export const shield = SpriteKind.create()
+    export const effect = SpriteKind.create()
 }
 function x_movement () {
     if (controller.left.isPressed()) {
@@ -30,9 +31,9 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     })
     shield.setPosition(me.x, me.y)
     if (me.image.equals(assets.image`me left`)) {
-        me.setImage(assets.image`shield left`)
+        shield.setImage(assets.image`shield left`)
     } else {
-        me.setImage(assets.image`shield right`)
+        shield.setImage(assets.image`shield right`)
     }
 })
 function handle_direction () {
@@ -78,6 +79,31 @@ function load_level () {
     tiles.setTileAt(me.tilemapLocation(), assets.tile`wall`)
     tiles_to_animate = tiles.getTilesByType(assets.tile`torch`)
 }
+controller.combos.attachCombo("rr", function () {
+    me.vx = 300
+    timer.background(function () {
+        dash.setImage(assets.image`dash`)
+        dash.image.flipX()
+        dash.setFlag(SpriteFlag.Invisible, false)
+        while (Math.abs(me.vx) > 100) {
+            dash.setPosition(me.x, me.y)
+            pause(10)
+        }
+        dash.setFlag(SpriteFlag.Invisible, true)
+    })
+})
+controller.combos.attachCombo("ll", function () {
+    me.vx = -300
+    timer.background(function () {
+        dash.setImage(assets.image`dash`)
+        dash.setFlag(SpriteFlag.Invisible, false)
+        while (Math.abs(me.vx) > 100) {
+            dash.setPosition(me.x, me.y)
+            pause(10)
+        }
+        dash.setFlag(SpriteFlag.Invisible, true)
+    })
+})
 sprites.onOverlap(SpriteKind.Sword, SpriteKind.Enemy, function (sword, enemy) {
     if (attacking) {
         info.changeScoreBy(100)
@@ -121,6 +147,7 @@ let anim: Image[] = []
 let enemy: Sprite = null
 let x_vel = 0
 let attacking = false
+let dash: Sprite = null
 let shield: Sprite = null
 let sword: Sprite = null
 let me: Sprite = null
@@ -142,6 +169,8 @@ load_level()
 shield = sprites.create(assets.image`shield right`, SpriteKind.shield)
 shield.setFlag(SpriteFlag.Invisible, true)
 shield.setFlag(SpriteFlag.GhostThroughSprites, true)
+dash = sprites.create(assets.image`dash`, SpriteKind.effect)
+dash.setFlag(SpriteFlag.Invisible, true)
 game.onUpdate(function () {
     x_movement()
     y_movement()

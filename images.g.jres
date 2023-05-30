@@ -34,6 +34,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "shield left"
     },
+    "image8": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAEAAAAAAAABAQAAAAABAQEBAQEAAAEBAQEBAQEBAQEBAQEBAQEBAQEA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "dash"
+    },
     "anim3": {
         "namespace": "myAnimations",
         "id": "anim3",
